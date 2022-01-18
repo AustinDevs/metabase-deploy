@@ -91,6 +91,9 @@ fi
 # because Heroku tends to think we can use more memory than we actually can.
 
 if [ -n "$HEROKU" ]; then
+
+    echo ulimit -u: $(ulimit -u)
+
     if [ `ulimit -u` = 256 ]; then
         JAVA_OPTS="$JAVA_OPTS -Xmx248m"                    # This seems to be the right amount that prevents the dyno from going over the quota
     fi
@@ -115,7 +118,7 @@ JAVA_OPTS+=" -Djava.awt.headless=true" # don't try to start AWT. Not sure this d
 JAVA_OPTS+=" -Dfile.encoding=UTF-8"    # Use UTF-8
 
 # Set timezone using the JAVA_TIMEZONE variable if present
-if [ "$JAVA_TIMEZONE"]; then
+if [ "$JAVA_TIMEZONE" ]; then
     echo "  -> Timezone setting detected: $JAVA_TIMEZONE"
     JAVA_OPTS+=" -Duser.timezone=$JAVA_TIMEZONE"
 fi
